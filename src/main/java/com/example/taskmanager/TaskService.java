@@ -26,7 +26,7 @@ public class TaskService {
     public Task updateTask(Long id, Task taskDetails){
         Task task= taskRepository.findById(id).orElse(null);
         if(task != null){
-            task.setTitle(taskDetails.getTitile());
+            task.setTitle(taskDetails.getTitle());
             task.setCompleted(taskDetails.isCompleted());
             return taskRepository.save(task);
         } 
