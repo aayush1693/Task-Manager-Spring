@@ -37,7 +37,7 @@
         
         div.innerHTML = `
           <strong>${task.title}</strong>
-          <button onclick="toggleTask(${task.id}, ${!task.completed})">
+          <button onclick='toggleTask(${task.id}, ${!task.completed}, ${JSON.stringify(task.title)})'>
             ${task.completed ? 'Mark Pending' : 'Mark Done'}
           </button>
           <button onclick="deleteTask(${task.id})">Delete</button>
@@ -60,11 +60,11 @@
       fetchTasks();
     }
 
-    async function toggleTask(id, completed) {
+    async function toggleTask(id, completed, title) {
       await fetch(`/api/tasks/${id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': '...' },
-        body: JSON.stringify({ title: '', completed }) // title not changed
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, completed })
       });
       fetchTasks();
     }
