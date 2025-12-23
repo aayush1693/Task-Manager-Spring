@@ -26,7 +26,7 @@ public class Task {
     public void setTitle(String title) { this.title= title;}
 
     public boolean isCompleted() {return completed;}
-    public void setCompleted() {this.completed= true;} 
+    public void setCompleted(boolean completed) {this.completed= completed;} 
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt= createdAt; }
