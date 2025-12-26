@@ -13,21 +13,43 @@ public class Task {
     @Column(nullable = false)
     private String title;
 
-    private boolean completed= false;
+    private boolean completed = false;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt= LocalDateTime.now();
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
     
-    //Getters and Setters
-    public Long getId() { return id;}
-    public void setId(Long id){ this.id= id;}
-
-    public String getTitle() {return title;}
-    public void setTitle(String title) { this.title= title;}
-
-    public boolean isCompleted() {return completed;}
-    public void setCompleted(boolean completed) {this.completed= completed;} 
-
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt= createdAt; }
-}
+//swagger Lombok Actuator 
+}   
