@@ -1,0 +1,49 @@
+version: '3.8'
+
+# Compose file that pulls the app image from GitHub Container Registry (GHCR) and runs Postgres
+# If the GHCR image is private, authenticate before running:
+#   echo "$GITHUB_TOKEN" | docker login ghcr.io -u YOUR_GITHUB_USERNAME --password-stdin
+# Then run: docker compose -f docker-compose.ghcr.yml pull && docker compose -f docker-compose.ghcr.yml up -d
+
+services:
+  taskmanager:
+    image: ghcr.io/aayush1693/task-manager-spring:latest
+    container_name: taskmanager-app
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/taskmanager
+      SPRING_DATASOURCE_USERNAME: taskuser
+      SPRING_DATASOURCE_PASSWORD: taskpass
+    depends_on:
+      - db
+    restart: unless-stopped
+    networks:
+      - task-net
+
+  db:
+    image: postgres:15
+    container_name: taskmanager-db
+    environment:
+      POSTGRES_DB: taskmanager
+      POSTGRES_USER: taskuser
+      POSTGRES_PASSWORD: taskpass
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    networks:
+      - task-net
+
+networks:
+  task-net:
+
+volumes:
+  pgdata:
+    name: taskmanager_pgdata

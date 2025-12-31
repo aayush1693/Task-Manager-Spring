@@ -1,37 +1,52 @@
-# docker-compose.yml
+# # docker-compose.yml
+# version: '3.8'
+
+# services:
+#   # Your Spring Boot app (built from your Dockerfile)
+#   taskmanager-app:
+#     build: .                     # ← builds using your Dockerfile
+#     ports:
+#       - "8080:8080"
+#     environment:
+#       SPRING_DATASOURCE_URL: jdbc:postgresql://taskmanager-db:5432/taskmanager
+#       SPRING_DATASOURCE_USERNAME: taskuser
+#       SPRING_DATASOURCE_PASSWORD: taskpass
+#     depends_on:
+#       - taskmanager-db
+#     networks:
+#       - task-net
+
+#   # PostgreSQL (using official image — NO Dockerfile needed)
+#   taskmanager-db:
+#     image: postgres:15           # ← official image
+#     environment:
+#       POSTGRES_DB: taskmanager
+#       POSTGRES_USER: taskuser
+#       POSTGRES_PASSWORD: taskpass
+#     ports:
+#       - "5433:5432"              # optional: for PgAdmin or psql locally
+#     volumes:
+#       - pgdata:/var/lib/postgresql/data
+#     networks:
+#       - task-net
+
+# networks:
+#   task-net:
+
+# volumes:
+#   pgdata:
+
 version: '3.8'
 
 services:
-  # Your Spring Boot app (built from your Dockerfile)
-  taskmanager-app:
-    build: .                     # ← builds using your Dockerfile
+  taskmanager:
+    image: ghcr.io/aayush1693/task-manager-spring:latest
+    container_name: taskmanager-app
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://taskmanager-db:5432/taskmanager
+      # Add any env vars your app needs, e.g.:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/taskmanager
       SPRING_DATASOURCE_USERNAME: taskuser
       SPRING_DATASOURCE_PASSWORD: taskpass
-    depends_on:
-      - taskmanager-db
-    networks:
-      - task-net
-
-  # PostgreSQL (using official image — NO Dockerfile needed)
-  taskmanager-db:
-    image: postgres:15           # ← official image
-    environment:
-      POSTGRES_DB: taskmanager
-      POSTGRES_USER: taskuser
-      POSTGRES_PASSWORD: taskpass
-    ports:
-      - "5433:5432"              # optional: for PgAdmin or psql locally
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-    networks:
-      - task-net
-
-networks:
-  task-net:
-
-volumes:
-  pgdata:
+    restart: unless-stopped
